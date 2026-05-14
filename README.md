@@ -76,7 +76,7 @@ FastAPI Deployment
 RAG1/
 │
 ├── notebooks/
-│   └── rag_pipeline.ipynb
+│   └── NDPA-2023.ipynb
 │
 ├── data/
 │   └── NDPA_2023.pdf
