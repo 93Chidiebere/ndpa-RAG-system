@@ -1,0 +1,17 @@
+numpy
+pandas
+pymupdf
+sentence-transformers
+faiss-cpu
+transformers
+torch
+fastapi
+uvicorn
+rank-bm25
+pytesseract
+pdf2image
+pillow
+accelerate
+python-multipart
+notebook
+ipykernel
