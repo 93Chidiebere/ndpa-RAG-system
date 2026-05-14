@@ -1,39 +1,245 @@
-# NDPA RAG System
+# Nigerian Data Protection Act (NDPA) 2023 RAG System
 
-This is a Retrieval-Augmented Generation (RAG) system built with FastAPI to answer questions about the Nigerian Data Protection Act (NDPA) 2023.
+A full lifecycle Retrieval-Augmented Generation (RAG) system built using the Nigerian Data Protection Act (NDPA) 2023 as the knowledge base.
 
-It uses:
-- **FAISS** for vector similarity search
-- **BM25** for keyword search
-- **SentenceTransformers** for generating text embeddings (`all-MiniLM-L6-v2`)
-- **TinyLlama** (`TinyLlama-1.1B-Chat-v1.0`) for generating answers
+This project demonstrates how to:
 
-## How to Deploy to Hugging Face Spaces (Free)
+- Extract and process PDF documents
+- Handle OCR for scanned PDFs
+- Chunk and clean legal text
+- Generate embeddings
+- Build a FAISS vector index
+- Implement hybrid retrieval (Dense + BM25)
+- Integrate an open-source LLM
+- Build a FastAPI inference API
+- Persist and reload vector indexes
+- Serve production-style RAG responses
 
-Hugging Face Spaces provides enough free RAM (16GB) to host this application smoothly. Follow these steps:
+The project was built primarily for learning practical AI systems engineering and production-oriented RAG architecture.
 
-1. Create an account on [Hugging Face](https://huggingface.co/) if you don't have one.
-2. Go to your Hugging Face profile and click **"New Space"**.
-3. Name your space (e.g., `NDPA-Legal-Assistant`).
-4. Select **"Docker"** as the Space SDK. (Choose the blank Docker template).
-5. Choose the **Free (Basic CPU)** hardware.
-6. Click **Create Space**.
-7. Connect your GitHub repository to Hugging Face or simply upload all your project files directly to the Space's Files section.
-   
-Make sure the following files are included in the repository/Space:
-- `app.py`
-- `requirements.txt`
-- `Dockerfile`
-- `chunks.json`
-- `ndpa_faiss.index`
+---
 
-Once uploaded, Hugging Face will automatically build the Docker container using the `Dockerfile` and start your app. You'll get a public URL that you can share with anyone!
+# Architecture Overview
 
-## Running Locally
+```text
+PDF Document
+    ↓
+OCR + Text Extraction
+    ↓
+Text Cleaning
+    ↓
+Chunking
+    ↓
+Embedding Generation
+    ↓
+FAISS Vector Index
+    ↓
+Hybrid Retrieval (FAISS + BM25)
+    ↓
+Prompt Construction
+    ↓
+TinyLlama Generation
+    ↓
+FastAPI Deployment
+```
 
-If you want to run this locally:
+---
 
-1. Install dependencies: `pip install -r requirements.txt`
-2. Run the preparation script (only needed once if `chunks.json` doesn't exist): `python save_data.py`
-3. Start the FastAPI server: `uvicorn app:app --reload`
-4. Visit `http://localhost:8000` in your browser.
+# Tech Stack
+
+## Core ML / NLP
+
+- Python
+- Sentence Transformers
+- HuggingFace Transformers
+- TinyLlama
+- FAISS
+- BM25
+
+## OCR & Document Processing
+
+- PyMuPDF
+- Tesseract OCR
+- pdf2image
+- Poppler
+
+## API & Deployment
+
+- FastAPI
+- Uvicorn
+
+---
+
+# Project Structure
+
+```text
+RAG1/
+│
+├── notebooks/
+│   └── rag_pipeline.ipynb
+│
+├── data/
+│   └── NDPA_2023.pdf
+│
+├── app.py
+├── requirements.txt
+│
+├── ndpa_faiss.index
+├── chunks.pkl
+├── metadata.pkl
+│
+└── README.md
+```
+
+---
+
+# Features
+
+- OCR support for scanned legal PDFs
+- Hybrid retrieval:
+  - Dense semantic search
+  - BM25 lexical search
+- Open-source local LLM inference
+- Persistent FAISS indexing
+- Modular FastAPI backend
+- Retrieval-augmented generation pipeline
+- Legal document question answering
+
+---
+
+# Why Hybrid Retrieval?
+
+Pure embedding retrieval struggles with:
+
+- exact legal terminology
+- clause references
+- statutory language
+- compliance wording
+
+This project combines:
+
+```text
+Dense Retrieval + BM25
+```
+
+to improve legal-domain retrieval quality.
+
+---
+
+# Open Source Models Used
+
+## Embedding Model
+
+```text
+sentence-transformers/all-MiniLM-L6-v2
+```
+
+## LLM
+
+```text
+TinyLlama/TinyLlama-1.1B-Chat-v1.0
+```
+
+TinyLlama was selected because it:
+
+- runs locally
+- is lightweight
+- is fully open source
+- works on CPU laptops
+
+---
+
+# Additional Dependencies (Windows)
+
+## Install Tesseract OCR
+
+Download:
+
+https://github.com/UB-Mannheim/tesseract/wiki
+
+Add to PATH:
+
+```text
+C:\Program Files\Tesseract-OCR
+```
+
+Verify:
+
+```powershell
+tesseract --version
+```
+
+---
+
+## Install Poppler
+
+Download:
+
+https://github.com/oschwartz10612/poppler-windows/releases
+
+Extract and add to PATH:
+
+```text
+C:\poppler\Library\bin
+```
+
+Verify:
+
+```powershell
+pdfinfo -v
+```
+
+---
+# Future Improvements
+
+Potential upgrades include:
+
+- Qdrant instead of FAISS
+- reranking models
+- metadata filtering
+- streaming responses
+- authentication
+- Docker deployment
+- Ollama integration
+- vLLM inference
+- GPU acceleration
+- LangChain/LlamaIndex orchestration
+
+---
+
+# Learning Goals
+
+This project was built to understand:
+
+- end-to-end RAG systems
+- production AI architecture
+- local open-source LLM deployment
+- retrieval systems
+- enterprise AI engineering concepts
+
+---
+
+# Disclaimer
+
+This project is for educational and research purposes only.
+
+Generated responses may contain inaccuracies or hallucinations. Always verify legal interpretations with qualified legal professionals.
+
+---
+
+# References
+
+## NDPA 2023
+
+Nigerian Data Protection Act 2023
+
+## Libraries
+
+- HuggingFace Transformers
+- Sentence Transformers
+- FAISS
+- FastAPI
+- PyMuPDF
+- Tesseract OCR
+
+---
